@@ -3,8 +3,9 @@
 int main() {
 
     Manager m;
+    m.detectAndSelfAssign();
     m.waitConnect();
-    m.run();
+    m.runPreview();
 
     return 0;
 }

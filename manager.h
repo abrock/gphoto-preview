@@ -22,18 +22,34 @@
 #include <ParallelTime/paralleltime.h>
 
 class Manager {
-    gphoto2pp::CameraWrapper * cameraWrapper;
+    std::shared_ptr<gphoto2pp::CameraWrapper> cameraWrapper = nullptr;
 
 public:
+    std::string model;
+    std::string port;
+
     Manager() {}
 
-    void run();
+    Manager(std::string const& _model, std::string const& _port);
+
+    void runPreview();
 
     void waitConnect();
 
     bool connect();
 
     void run_difference();
+
+    void capture_and_download(const std::string &fn);
+
+    static std::vector<std::shared_ptr<Manager> > listCams();
+
+    void detectAndSelfAssign();
 };
+
+bool operator < (Manager const& a, Manager const& b);
+
+bool operator < (std::shared_ptr<gphoto2pp::CameraWrapper> const& a, std::shared_ptr<gphoto2pp::CameraWrapper> const& b);
+
 
 #endif // MANAGER_H

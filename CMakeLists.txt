@@ -5,6 +5,8 @@ project(gphoto-preview LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-fPIC -pthread ")
+
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR}/cmake_modules/)
 
 find_package(Gphoto2 REQUIRED)
@@ -46,6 +48,8 @@ find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Quick REQUIRED)
 
 set(PROJECT_SOURCES
         stereo-capture.cpp
+        multi-view-manager.cpp
+        manager.cpp
         stereo-capture.qrc
 )
 
@@ -68,4 +72,11 @@ endif()
 target_compile_definitions(stereo-capture
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 target_link_libraries(stereo-capture
-  PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Quick)
+  PRIVATE
+  Qt${QT_VERSION_MAJOR}::Core
+  Qt${QT_VERSION_MAJOR}::Quick
+  gphoto2pp
+  ${GPHOTO2_LIBRARY}
+  ${OpenCV_LIBRARIES}
+  ParallelTime
+  )
